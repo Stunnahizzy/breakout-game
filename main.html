@@ -32,24 +32,31 @@
         var dx = 2 // d = rate in change of velocity
         var dy = -2
         var ballRadius = 10
+        var ball_fill = "#0095DD"
         
         function drawBall() {
             brush.beginPath()
             brush.arc(x, y, ballRadius, 0, Math.PI * 2, false) // params(x,y,radius,start-ang,end-ang,drawing-dir)
-            brush.fillStyle = "#0095DD"
+            brush.fillStyle = ball_fill
             brush.fill()
             brush.closePath()
-        }
+        }   
 
         function draw() {
             brush.clearRect(0, 0, canvas.width, canvas.height)
             drawBall()
 
-            if (x + dx > canvas.width || x + dx < 0) {
-                dx = -dx;
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                dx = -dx
+                ball_fill = "red"
+                brush.fillStyle = ball_fill 
+                
+
             }
-            if (y + dy > canvas.height || y + dy < 0) {
-                dy = -dy;
+            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+                dy = -dy
+                ball_fill = "green"
+                brush.fillStyle = ball_fill
             }
             x += dx
             y += dy
