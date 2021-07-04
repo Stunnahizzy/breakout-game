@@ -28,27 +28,36 @@
         var brush = canvas.getContext("2d") // getting 2-d rendering / PAINT BRUSH
         var x = canvas.width / 2
         var y = canvas.height - 30
-       
 
-        function draw() {
-            var dx = 2 // d = rate in change of velocity
-            var dy = -2
-            
-
-            // BALL
-            brush.clearRect(0,0,canvas.width, canvas.height)
+        var dx = 2 // d = rate in change of velocity
+        var dy = -2
+        var ballRadius = 10
+        
+        function drawBall() {
             brush.beginPath()
-            brush.arc(x,y,10,0, Math.PI*2,false) // params(x,y,radius,start-ang,end-ang,drawing-dir)
+            brush.arc(x, y, ballRadius, 0, Math.PI * 2, false) // params(x,y,radius,start-ang,end-ang,drawing-dir)
             brush.fillStyle = "#0095DD"
             brush.fill()
             brush.closePath()
+        }
+
+        function draw() {
+            brush.clearRect(0, 0, canvas.width, canvas.height)
+            drawBall()
+
+            if (x + dx > canvas.width || x + dx < 0) {
+                dx = -dx;
+            }
+            if (y + dy > canvas.height || y + dy < 0) {
+                dy = -dy;
+            }
             x += dx
             y += dy
 
-
         }
-        setInterval(draw,10) // drawing loop -- redraws screen every 1 second
 
+        setInterval(draw,10) // drawing loop -- redraws screen every 1 second
+        
 
     </script>
 
