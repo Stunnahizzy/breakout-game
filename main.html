@@ -23,33 +23,32 @@
     <canvas id="myCanvas" width="480" height="320"></canvas>
 
     <script>
-	let canvas = document.getElementById("myCanvas") // storing canvas ref
-    let brush = canvas.getContext("2d") // getting 2-d rendering / PAINT BRUSH
+        // BALL POSITIONS
+        var canvas = document.getElementById("myCanvas") // storing canvas ref
+        var brush = canvas.getContext("2d") // getting 2-d rendering / PAINT BRUSH
+        var x = canvas.width / 2
+        var y = canvas.height - 30
+       
 
-    // drawing a rect
-    brush.beginPath() // ---> start fill instructions VVVV
-    brush.rect(20,40,50,50) // top,right,left,bottom params
-    brush.fillStyle = "#FF0000"
-    brush.fill() // fills interior
-    brush.closePath() // ---> ending fill instructions ^^^^
+        function draw() {
+            var dx = 2 // d = rate in change of velocity
+            var dy = -2
+            
 
-    // drawing a circle
-    brush.beginPath()
-    brush.arc(200,200,90,0, Math.PI*2, false) // --> x,y,arc-radius,start ang,end ang,drawing dir
-    brush.fillStyle = "yellow"
-    brush.fill()
-    brush.strokeStyle = "rgba(0,0,255,0.9)"
-    brush.stroke()
-    brush.closePath()
+            // BALL
+            brush.clearRect(0,0,canvas.width, canvas.height)
+            brush.beginPath()
+            brush.arc(x,y,10,0, Math.PI*2,false) // params(x,y,radius,start-ang,end-ang,drawing-dir)
+            brush.fillStyle = "#0095DD"
+            brush.fill()
+            brush.closePath()
+            x += dx
+            y += dy
 
 
-    // stroke filling a rect
-    brush.beginPath()
-    brush.rect(160,10,100,40)
-    brush.strokeStyle = "rgba(120,80,255,0.2)"
-    brush.stroke() // fills only the outlines, not interior
-    brush.closePath()
-    
+        }
+        setInterval(draw,10) // drawing loop -- redraws screen every 1 second
+
 
     </script>
 
