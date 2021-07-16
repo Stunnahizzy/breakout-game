@@ -23,16 +23,47 @@
     <canvas id="myCanvas" width="480" height="320"></canvas>
 
     <script>
-        // BALL POSITIONS
+        // canvas
         var canvas = document.getElementById("myCanvas") // storing canvas ref
         var brush = canvas.getContext("2d") // getting 2-d rendering / PAINT BRUSH
         var x = canvas.width / 2
         var y = canvas.height - 30
 
+        // force
         var dx = 2 // d = rate in change of velocity
         var dy = -2
-        var ballRadius = 10
-        var ball_fill = "#0095DD"
+        var ballRadius = 7
+        var ball_fill = "#0091DD"
+
+        //paddle
+        var paddleWidth = 75
+        var paddleHeight = 15
+        var paddleX = (canvas.width-paddleWidth) / 2
+        var rightPressed = false
+        var leftPressed = false
+        
+        document.addEventListener("keydown", keyDownHandler, false)
+        document.addEventListener("keyup", keyUpHandler, false)
+
+        // key press handling
+        function keyDownHandler(e) {
+            if(e.key == "Right" || e.key == "ArrowRight") {
+                rightPressed = true
+            }
+            if(e.key == "Left" || e.key == "ArrowLeft") {
+                leftPressed = true
+            }
+        }
+        // key press handling
+        function keyUpHandler(e) {
+            if(e.key == "Right" || e.key == "ArrowRight") {
+                rightPressed = false
+            }
+            if(e.key == "Left" || e.key == "ArrowLeft") {
+                leftPressed = false
+            }
+        }
+        
         
         function drawBall() {
             brush.beginPath()
@@ -41,29 +72,57 @@
             brush.fill()
             brush.closePath()
         }   
-
+        function drawPaddle() {
+            brush.beginPath();
+            brush.rect(paddleX, canvas.height-paddleHeight,paddleWidth,paddleHeight / 2)
+            brush.fillStyle = "#0095DD"
+            brush.fill()
+            brush.closePath()
+            
+        }
+        
         function draw() {
             brush.clearRect(0, 0, canvas.width, canvas.height)
             drawBall()
+            drawPaddle()
 
+            // paddle logic
+            if (rightPressed) {
+                paddleX += 7;
+                if (paddleX + paddleWidth > canvas.width) {
+                    paddleX = canvas.width - paddleWidth;
+                }
+            }
+            else if (leftPressed) {
+                paddleX -= 7;
+                if (paddleX < 0) {
+                    paddleX = 0;
+                }
+            }
+
+            // ball dynamics
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
                 dx = -dx
                 ball_fill = "red"
-                brush.fillStyle = ball_fill 
-                
-
             }
-            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+
+            if (y + dy < ballRadius) {
                 dy = -dy
-                ball_fill = "green"
-                brush.fillStyle = ball_fill
+            } else if(y+dy > canvas.height-ballRadius) {
+                if(x > paddleX && x < paddleX + paddleWidth) {
+                    dy = -dy
+                }
+                else {
+                    alert("GG CHIEF")
+                    document.location.reload()
+                    clearInterval(interval)
+                }
             }
-            x += dx
+            // ball speed altenators
             y += dy
-
+            x += dx
         }
-
-        setInterval(draw,10) // drawing loop -- redraws screen every 1 second
+        var interval = setInterval(draw, 10) // drawing loop -- redraws screen every 1 second
         
 
     </script>
